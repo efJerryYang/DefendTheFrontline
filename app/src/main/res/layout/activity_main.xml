@@ -12,8 +12,8 @@
         android:layout_above="@id/simpleButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Aircraft War"
-        android:textSize="64dp"
+        android:text="Defend The Frontline"
+        android:textSize="40dp"
         android:layout_margin="10dp"
         android:textColor="@color/black"
         />
