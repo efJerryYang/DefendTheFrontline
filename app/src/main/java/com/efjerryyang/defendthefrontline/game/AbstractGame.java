@@ -2,19 +2,23 @@ package com.efjerryyang.defendthefrontline.game;
 
 import static com.efjerryyang.defendthefrontline.aircraft.HeroAircraft.BOSS_APPEAR_SCORE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
+import com.efjerryyang.defendthefrontline.aircraft.AbstractAircraft;
 import com.efjerryyang.defendthefrontline.aircraft.AbstractEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.BossEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
@@ -560,14 +564,15 @@ public abstract class AbstractGame extends SurfaceView implements
 
     public void paintScoreAndLife() {
         // Todo: canvas 绘图不起作用，可能是图片的遮挡，待解决
-        int x = 10;
-        int y = MainActivity.screenHeight - 70;
-        canvas.drawText("SCORE:" + this.score, x, y, imagePaint);
-//        g.setFont(new Font("SansSerif", Font.BOLD, 22));
-//        g.drawString("SCORE:" + this.score, x, y);
-        y = y + 20;
-        canvas.drawText("LIFE:" + this.heroAircraft.getHp(), x, y, imagePaint);
-
+        int x = (int) (MainActivity.screenWidth * 0.05);
+        int y = (int) (MainActivity.screenHeight * 0.8);
+        textPaint.setTextSize(64);
+//        textPaint.setStrokeWidth(3); // 加粗没效果
+        textPaint.setColor(Color.RED);
+        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        canvas.drawText("SCORE:" + this.score, x, y, textPaint);
+        y = y + 100;
+        canvas.drawText("LIFE:" + this.heroAircraft.getHp(), x, y, textPaint);
     }
 
     public void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects) {
@@ -577,108 +582,116 @@ public abstract class AbstractGame extends SurfaceView implements
         for (AbstractFlyingObject object : objects) {
             Bitmap image = object.getImage();
             assert image != null : objects.getClass().getName() + " has no image! ";
-            canvas.drawBitmap(image, object.getLocationX() - image.getWidth() / 2, object.getLocationY() - image.getHeight() / 2, imagePaint);
+            canvas.drawBitmap(image, object.getLocationX() - image.getWidth() / 2f, object.getLocationY() - image.getHeight() / 2f, imagePaint);
+        }
+    }
+
+    public void paintBloodBar(float x, float y, float length, float height,
+                              @ColorInt int bottom, @ColorInt int surface,
+                              float curHp, float maxHp, boolean text) {
+        float pointAX = x + 0, pointAY = y + 0;
+        float pointBX = x + length, pointBY = y + 0;
+        float pointCX = x + 0, pointCY = y + height;
+        float pointDX = x + length, pointDY = y + height;
+        /*
+           pta: (x, y) ----------------------------- ptb: (x + bloodBarLength, y)
+            |                                         |
+            |                                         |
+           ptc: (x, y + bloodBarHeight) ------------ ptd: (x + bloodBarLength, y + bloodBarHeight)
+        */
+        float[] pts = new float[]{
+                pointAX, pointAY, pointBX, pointBY,
+                pointCX, pointCY, pointDX, pointDY,
+                pointAX, pointAY, pointCX, pointCY,
+                pointBX, pointBY, pointDX, pointDY
+        };
+        // 绘制底层灰色
+        shapePaint.setColor(bottom);
+        canvas.drawRect(pointAX, pointAY, pointDX, pointDY, shapePaint);
+        // 绘制血条红色
+        shapePaint.setColor(surface);
+        canvas.drawRect(pointAX, pointAY, pointAX + length * (curHp / maxHp), pointDY, shapePaint);
+        // 绘制边框黑色
+        shapePaint.setColor(Color.BLACK);
+        canvas.drawLines(pts, shapePaint);
+        textPaint.setColor(surface);
+        textPaint.setTextSize(28);
+        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        if (text) {
+            @SuppressLint("DefaultLocale")
+            String strDisplay = String.format(" %4d / %4d ", (int) curHp, (int) maxHp);
+            canvas.drawText(strDisplay, pointDX - length * 0.3f, pointDY + height * 1.7f, textPaint);
         }
     }
 
     public void paintEnemyLife() {
-//        Canvas canvas;
-//        for (AbstractEnemy enemy : enemyAircrafts) {
-//            if (enemy.getClass().equals(EliteEnemy.class)) {
-//                int x = enemy.getLocationX() - 50;
-//                int y = enemy.getLocationY() - 50;
-//                canvas.setColor(Color.GRAY);
-//                canvas.drawRect(x, y, 100, 10);
-//                canvas.fillRect(x, y, 100, 10);
-//                canvas.setColor(Color.RED);
-//                canvas.fill3DRect(x, y, (int) (100 * ((enemy.getHp()) / (double) enemy.getMaxHp())), 10, true);
-//                canvas.setColor(Color.BLACK);
-//                canvas.draw3DRect(x, y, 100, 10, true);
-//            } else if (enemy.getClass().equals(BossEnemy.class)) {
-//                int x = (int) Math.floor(0.1 * MainActivity.screenWidth);
-//                int y = 15;
-//                int curHp = enemy.getHp();
-//                int maxHp = enemy.getMaxHp();
-//                canvas.setColor(Color.GRAY);
-//                canvas.drawRect(x, y, (int) (0.8 * MainActivity.screenWidth), 10);
-//                canvas.fillRect(x, y, (int) (0.8 * MainActivity.screenWidth), 10);
-//                canvas.setColor(Color.RED);
-//                canvas.fill3DRect(x, y, (int) (0.8 * MainActivity.screenWidth * (curHp / (double) maxHp)), 10, true);
-//                canvas.setColor(Color.BLACK);
-//                canvas.draw3DRect(x, y, (int) (0.8 * MainActivity.screenWidth), 10, true);
-//
-//                x = (int) (0.55 * MainActivity.screenWidth);
-//                y = y + 25;
-//                canvas.setColor(Color.RED);
-//                canvas.setFont(new Font("SansSerif", Font.BOLD, 15));
-//                String strDisplay = String.format("BOSS HP: %4d / %4d", curHp, maxHp);
-//                canvas.drawString(strDisplay, x, y);
-//
-//            }
-//        }
-//
+        float bloodBarLength = ImageManager.HERO_IMAGE.getWidth() * 0.9f;
+        float bloodBarOffsetX = ImageManager.HERO_IMAGE.getWidth() / 2f * 0.9f;
+        float bloodBarOffsetY = ImageManager.HERO_IMAGE.getHeight() / 2f * 1.2f;
+        float bloodBarHeight = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.1f;
+        float barMargin = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.05f;
+        for (AbstractEnemy enemy : enemyAircrafts) {
+            if (!enemy.getClass().equals(BossEnemy.class)) {
+                float x = enemy.getLocationX() - bloodBarOffsetX;
+                float y = enemy.getLocationY() - bloodBarOffsetY;
+                paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
+                        enemy.getHp(), enemy.getMaxHp(), true);
+            } else {
+                float x = MainActivity.screenWidth * 0.2f;
+                float y = MainActivity.screenHeight * 0.1f;
+                paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
+                        enemy.getHp(), enemy.getMaxHp(), true);
+            }
+        }
+
     }
 
     public void paintHeroAttributes() {
-//        int x = heroAircraft.getLocationX() - 50;
-//        int y = heroAircraft.getLocationY() - 50;
-//        int currentPropValidMaxTime = (int) (2000 / (5 + level));
-//        // draw hp and blood prop
-//        int currentBloodPropStage = heroAircraft.getBloodPropStage();
-////        System.out.println(currentBloodPropStage);
-//        int currentBloodValidTime = bloodValidTimeCnt;
-//        shapePaint.setAntiAlias(true);
-//        shapePaint.setColor(Color.GRAY);
-//        canvas.drawRect(x, y, x + 100, y + 5, shapePaint);
-//        Log.d(TAG, "paintHeroAttributes: " + x);
-//        if (currentBloodValidTime <= 0) {
-//            shapePaint.setColor(Color.GRAY);
-//            canvas.drawRect(x, y, x + 100, y + 5, shapePaint);
-//            g.setColor(Color.GRAY);
-//            g.drawRect(x, y, 100, 5);
-//            g.fillRect(x, y, 100, 5);
-//            g.setColor(Color.RED);
-//            g.fill3DRect(x, y, (int) (100 * ((heroAircraft.getHp()) / (double) heroAircraft.getMaxHp())), 5, true);
-//            g.setColor(Color.BLACK);
-//            g.draw3DRect(x, y, 100, 5, true);
-//        } else {
-//            g.setColor(Color.RED);
-//            g.drawRect(x, y, 100, 5);
-//            g.fillRect(x, y, 100, 5);
-//            g.setColor(Color.YELLOW);
-//            g.fill3DRect(x, y, (int) (100 * (currentBloodValidTime / (double) currentPropValidMaxTime)), 5, true);
-//            g.setColor(Color.BLACK);
-//            g.draw3DRect(x, y, 100, 5, true);
-//        }
+        float bloodBarLength = ImageManager.HERO_IMAGE.getWidth() * 0.9f;
+        float bloodBarOffsetX = ImageManager.HERO_IMAGE.getWidth() / 2f * 0.9f;
+        float bloodBarOffsetY = ImageManager.HERO_IMAGE.getHeight() / 2f * 1.3f;
+        float bloodBarHeight = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.15f;
+        float barMargin = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.1f;
+        float x = heroAircraft.getLocationX() - bloodBarOffsetX;
+        float y = heroAircraft.getLocationY() - bloodBarOffsetY;
+        int currentPropValidMaxTime = (int) (2000 / (5 + level));
 
-//        // draw bullet prop
-//        y = y - 8;
-//        int currentBulletPropStage = heroAircraft.getBulletPropStage();
-//        int currentBulletValidTime = bulletValidTimeCnt;
-//        if (currentBulletPropStage == 0 || currentBulletPropStage == 1) {
-//            g.setColor(Color.GRAY);
-//        } else if (currentBulletPropStage == 2) {
-//            g.setColor(Color.BLUE);
-//        } else if (currentBulletPropStage == 3) {
-//            g.setColor(Color.CYAN);
-//        }
-//        g.drawRect(x, y, 100, 5);
-//        g.fillRect(x, y, 100, 5);
-//        if (currentBulletPropStage == 0 || currentBulletPropStage == 1) {
-//            g.setColor(Color.BLUE);
-//        } else if (currentBulletPropStage == 2) {
-//            g.setColor(Color.CYAN);
-//        } else if (currentBulletPropStage == 3) {
-//            g.setColor(Color.MAGENTA);
-//        }
-//        g.fill3DRect(x, y, (int) (100 * (currentBulletValidTime / (double) currentPropValidMaxTime)), 5, true);
-//        g.setColor(Color.BLACK);
-//        g.draw3DRect(x, y, 100, 5, true);
+        // hp and blood prop
+        int currentBloodPropStage = heroAircraft.getBloodPropStage();
+        int currentBloodValidTime = bloodValidTimeCnt;
+        Log.d(TAG, "paintHeroAttributes: " + x);
+        if (currentBloodValidTime <= 0) {
+            paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
+                    heroAircraft.getHp(), heroAircraft.getMaxHp(), true);
+        } else {
+            paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.RED, Color.YELLOW,
+                    currentBloodValidTime, currentPropValidMaxTime, true);
+        }
+
+        // draw bullet prop
+        y -= bloodBarHeight + barMargin;
+        int currentBulletPropStage = heroAircraft.getBulletPropStage();
+        int currentBulletValidTime = bulletValidTimeCnt;
+        @ColorInt int bottom, surface;
+        if (currentBulletPropStage == 0 || currentBulletPropStage == 1) {
+            bottom = Color.GRAY;
+            surface = Color.BLUE;
+        } else if (currentBulletPropStage == 2) {
+            bottom = Color.BLUE;
+            surface = Color.CYAN;
+        } else if (currentBulletPropStage == 3) {
+            bottom = Color.CYAN;
+            surface = Color.MAGENTA;
+        } else {
+            bottom = Color.GRAY;
+            surface = Color.BLUE;
+        }
+        paintBloodBar(x, y, bloodBarLength, bloodBarHeight, bottom, surface,
+                currentBulletValidTime, currentPropValidMaxTime, false);
     }
 
     public void paintBackground() {
         // 绘制背景,图片滚动
-
         canvas.drawBitmap(backgroundImage, 0, this.backGroundTop - backgroundImage.getHeight(), imagePaint);
         canvas.drawBitmap(backgroundImage, 0, this.backGroundTop, imagePaint);
         this.backGroundTop += 1;
@@ -689,13 +702,17 @@ public abstract class AbstractGame extends SurfaceView implements
 
     public void draw() {
         canvas = mSurfaceHolder.lockCanvas();
-        imagePaint.setAntiAlias(true);
         if (mSurfaceHolder == null || canvas == null) {
             return;
         }
+        imagePaint.setAntiAlias(true);
+        shapePaint.setAntiAlias(true);
+        textPaint.setAntiAlias(true);
 
         // 绘制背景,图片滚动
         paintBackground();
+        enemyAircrafts.add(bossFactory.createEnemy(level));
+        enemyAircrafts.add(eliteFactory.createEnemy(level));
 
         // 先绘制子弹，后绘制飞机
         paintImageWithPositionRevised(enemyBullets);
@@ -703,7 +720,7 @@ public abstract class AbstractGame extends SurfaceView implements
 
         paintImageWithPositionRevised(enemyAircrafts);
         paintImageWithPositionRevised(props);
-        canvas.drawBitmap(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2, heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2, imagePaint);
+        canvas.drawBitmap(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2f, heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2f, imagePaint);
 
         // 绘制得分和生命值
         paintScoreAndLife();
@@ -748,7 +765,7 @@ public abstract class AbstractGame extends SurfaceView implements
         while (!gameOverFlag) {
             Log.d("GameActivity", "run: Width:" + this.backgroundImage.getWidth());
             synchronized (mSurfaceHolder) {
-                action(); // Todo: bug 执行3次必然崩溃
+//                action(); // Todo: bug 执行3次必然崩溃
                 Log.d(TAG, "run: action");
                 draw();
             }

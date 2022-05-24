@@ -1,6 +1,8 @@
-- [ ] 部分类代码重构：
+## Todo
 
-  - [ ] java package naming routine
+- [x] 部分类代码重构：
+
+  - [x] java package naming routine
 
     > https://stackoverflow.com/questions/29053659/how-to-name-a-java-package-as-a-student
 
@@ -28,13 +30,17 @@
     - [x] `strategy.*`
 
 - [x] 原始功能移植
-  
+
   - [x] 开始界面
   - [ ] 游戏主体
     - [x] 背景滚动
     - [ ] 游戏逻辑运行（action）
-    - [ ] 血条添加（draw）
+    - [x] 血条添加（draw）
   - [ ] 排行榜界面
   - [ ] `refactor: System.out.print to Log.m/i/d/r/w/e`
-  
+
 - [ ] 联网功能
+
+## Bug
+
+- [ ] 绘制敌机和子弹的部分出错
