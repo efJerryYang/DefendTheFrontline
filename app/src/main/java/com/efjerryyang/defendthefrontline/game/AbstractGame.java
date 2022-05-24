@@ -640,9 +640,9 @@ public abstract class AbstractGame extends SurfaceView implements
     public void paintEnemyLife() {
         float bloodBarLength = ImageManager.HERO_IMAGE.getWidth() * 0.9f;
         float bloodBarOffsetX = ImageManager.HERO_IMAGE.getWidth() / 2f * 0.9f;
-        float bloodBarOffsetY = ImageManager.HERO_IMAGE.getHeight() / 2f * 1.2f;
-        float bloodBarHeight = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.1f;
-        float barMargin = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.05f;
+        float bloodBarOffsetY = ImageManager.HERO_IMAGE.getHeight() / 2f * 1.3f;
+        float bloodBarHeight = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.15f;
+        float barMargin = ImageManager.HERO_IMAGE.getHeight() / 2f * 0.1f;
         for (AbstractEnemy enemy : enemyAircrafts) {
             if (!enemy.getClass().equals(BossEnemy.class)) {
                 float x = enemy.getLocationX() - bloodBarOffsetX;
@@ -650,9 +650,9 @@ public abstract class AbstractGame extends SurfaceView implements
                 paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
                         enemy.getHp(), enemy.getMaxHp(), true);
             } else {
-                float x = MainActivity.screenWidth * 0.2f;
-                float y = MainActivity.screenHeight * 0.1f;
-                paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
+                float x = MainActivity.screenWidth * 0.1f;
+                float y = MainActivity.screenHeight * 0.01f;
+                paintBloodBar(x, y, MainActivity.screenWidth * 0.8f, bloodBarHeight * 2, Color.GRAY, Color.RED,
                         enemy.getHp(), enemy.getMaxHp(), true);
             }
         }
@@ -714,7 +714,6 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public void draw() {
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         canvas = mSurfaceHolder.lockCanvas();
         if (mSurfaceHolder == null || canvas == null) {
             return;
@@ -729,23 +728,17 @@ public abstract class AbstractGame extends SurfaceView implements
         // 先绘制子弹，后绘制飞机
         paintImageWithPositionRevised(enemyBullets);
         paintImageWithPositionRevised(heroBullets);
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 
         paintImageWithPositionRevised(enemyAircrafts);
         paintImageWithPositionRevised(props);
         canvas.drawBitmap(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2f, heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2f, imagePaint);
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 
         // 绘制得分和生命值
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         paintScoreAndLife();
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         // 绘制道具时间条
         paintHeroAttributes();
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         // 绘制敌机生命条
         paintEnemyLife();
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 
         mSurfaceHolder.unlockCanvasAndPost(canvas);
     }
