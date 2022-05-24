@@ -95,7 +95,7 @@ public abstract class AbstractGame extends SurfaceView implements
     protected boolean gameOverFlag = false;
     protected int[] enemyAircraftGenerationCycle = {0, 400};
     protected int[] enemyShootCycle = {0, 300};
-    protected int[] heroShootCycle = {0, 100};
+    protected int[] heroShootCycle = {0, 300};
     /**
      * boss机生成控制
      * 当scoreCnt == 0，并且score > 500时，产生boss敌机，bossFlag = true
@@ -162,42 +162,54 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public final void action() {
-
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
 //        Runnable gameTask = () -> {
         // 周期性执行（控制频率）
         if (timeCountAndNewCycleJudge(enemyAircraftGenerationCycle)) {
             generateAllEnemy();
         }
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         if (timeCountAndNewCycleJudge(enemyShootCycle)) {
             enemyShootAction();
         }
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         if (timeCountAndNewCycleJudge(heroShootCycle)) {
             heroShootAction();
         }
         // playBGM
 //            playBGM();
         // 子弹移动
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         bulletsMoveAction();
         // 飞机移动
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         aircraftsMoveAction(1);
         // 道具移动
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         propMoveAction();
         // 撞击检测
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         crashCheckAction();
         // 后处理
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         postProcessAction();
         //每个时刻重绘界面
 //            repaint();
         // 游戏结束检查
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         gameOverCheck();
 //        };
 //        Runnable timeCounter = () -> {
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         time += timeInterval;
         // 难度控制
         level = Math.min(bossCnt + 0.9999 + baseLevel, baseLevel * ((double) time / 1e5 + levelScalar));
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         bulletPropStageCount();
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         bloodPropStageCount();
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 //            if (gameOverFlag) {
 //                executorService.shutdown();
 //            }
@@ -232,20 +244,21 @@ public abstract class AbstractGame extends SurfaceView implements
             case 0: {
                 heroAircraft.setShootNum(1);
                 heroAircraft.setBulletSpeedUp(false);
+                break;
             }
-            case 1: {
-                heroAircraft.setBulletSpeedUp(false);
-                heroAircraft.setShootNum(heroAircraft.getBulletPropStage() * 2);
-            }
+            case 1:
             case 2: {
                 heroAircraft.setBulletSpeedUp(false);
                 heroAircraft.setShootNum(heroAircraft.getBulletPropStage() * 2);
+                break;
             }
             case 3: {
                 heroAircraft.setShootNum(5);
+                break;
             }
             default: {
                 heroAircraft.setBulletPropStage(3);
+                break;
             }
         }
     }
@@ -701,6 +714,7 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public void draw() {
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         canvas = mSurfaceHolder.lockCanvas();
         if (mSurfaceHolder == null || canvas == null) {
             return;
@@ -711,23 +725,27 @@ public abstract class AbstractGame extends SurfaceView implements
 
         // 绘制背景,图片滚动
         paintBackground();
-        enemyAircrafts.add(bossFactory.createEnemy(level));
-        enemyAircrafts.add(eliteFactory.createEnemy(level));
 
         // 先绘制子弹，后绘制飞机
         paintImageWithPositionRevised(enemyBullets);
         paintImageWithPositionRevised(heroBullets);
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 
         paintImageWithPositionRevised(enemyAircrafts);
         paintImageWithPositionRevised(props);
         canvas.drawBitmap(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2f, heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2f, imagePaint);
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 
         // 绘制得分和生命值
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         paintScoreAndLife();
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         // 绘制道具时间条
         paintHeroAttributes();
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         // 绘制敌机生命条
         paintEnemyLife();
+        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
 
         mSurfaceHolder.unlockCanvasAndPost(canvas);
     }
@@ -765,7 +783,7 @@ public abstract class AbstractGame extends SurfaceView implements
         while (!gameOverFlag) {
             Log.d("GameActivity", "run: Width:" + this.backgroundImage.getWidth());
             synchronized (mSurfaceHolder) {
-//                action(); // Todo: bug 执行3次必然崩溃
+                action(); // Todo: bug 执行3次必然崩溃
                 Log.d(TAG, "run: action");
                 draw();
             }

@@ -1,5 +1,7 @@
 package com.efjerryyang.defendthefrontline.application;
 
+import static com.efjerryyang.defendthefrontline.application.ImageManager.CLASSNAME_IMAGE_MAP;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,10 +11,19 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.efjerryyang.defendthefrontline.R;
+import com.efjerryyang.defendthefrontline.aircraft.BossEnemy;
+import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
+import com.efjerryyang.defendthefrontline.aircraft.HeroAircraft;
+import com.efjerryyang.defendthefrontline.aircraft.MobEnemy;
+import com.efjerryyang.defendthefrontline.bullet.EnemyBullet;
+import com.efjerryyang.defendthefrontline.bullet.HeroBullet;
 import com.efjerryyang.defendthefrontline.game.AbstractGame;
 import com.efjerryyang.defendthefrontline.game.DifficultGame;
 import com.efjerryyang.defendthefrontline.game.MediumGame;
 import com.efjerryyang.defendthefrontline.game.SimpleGame;
+import com.efjerryyang.defendthefrontline.prop.BloodProp;
+import com.efjerryyang.defendthefrontline.prop.BombProp;
+import com.efjerryyang.defendthefrontline.prop.BulletProp;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -63,6 +74,16 @@ public class GameActivity extends AppCompatActivity {
         ImageManager.BOMB_PROP_IMAGE = BitmapFactory.decodeResource(getResources(), R.drawable.prop_bomb);
         ImageManager.BULLET_PROP_IMAGE = BitmapFactory.decodeResource(getResources(), R.drawable.prop_bullet);
         ImageManager.SHIELD_IMAGE = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
+        CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), ImageManager.HERO_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(MobEnemy.class.getName(), ImageManager.MOB_ENEMY_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(EliteEnemy.class.getName(), ImageManager.ELITE_ENEMY_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(BossEnemy.class.getName(), ImageManager.BOSS_ENEMY_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(HeroBullet.class.getName(), ImageManager.HERO_BULLET_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(EnemyBullet.class.getName(), ImageManager.ENEMY_BULLET_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(BloodProp.class.getName(), ImageManager.BLOOD_PROP_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(BombProp.class.getName(), ImageManager.BOMB_PROP_IMAGE);
+        CLASSNAME_IMAGE_MAP.put(BulletProp.class.getName(), ImageManager.BULLET_PROP_IMAGE);
+//        CLASSNAME_IMAGE_MAP.put(Shield.class.getName(),ImageManager.SHIELD_IMAGE);
 
     }
 

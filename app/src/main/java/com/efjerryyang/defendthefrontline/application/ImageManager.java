@@ -20,7 +20,7 @@ public class ImageManager {
      * 类名-图片 映射，存储各基类的图片 <br>
      * 可使用 CLASSNAME_IMAGE_MAP.get( obj.getClass().getName() ) 获得 obj 所属基类对应的图片
      */
-    private static final Map<String, Bitmap> CLASSNAME_IMAGE_MAP = new HashMap<>();
+    public static final Map<String, Bitmap> CLASSNAME_IMAGE_MAP = new HashMap<>();
 
     public static Bitmap BACKGROUND_IMAGE_LEVEL1;
     public static Bitmap BACKGROUND_IMAGE_LEVEL2;
