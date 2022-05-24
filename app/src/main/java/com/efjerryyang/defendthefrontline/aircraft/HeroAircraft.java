@@ -1,7 +1,9 @@
 package com.efjerryyang.defendthefrontline.aircraft;
 
+import com.efjerryyang.defendthefrontline.application.GameActivity;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
+import com.efjerryyang.defendthefrontline.game.AbstractGame;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +75,12 @@ public class HeroAircraft extends AbstractAircraft {
 
     @Override
     public void forward() {
-        // 英雄机由鼠标控制，不通过forward函数移动
+        if (locationX <= 0 || locationX >= MainActivity.screenWidth) {
+            locationX = locationX <= 0 ? 1 : MainActivity.screenWidth - 1;
+        }
+        if (locationY <= 0 || locationY >= MainActivity.screenHeight * 0.82) {
+            locationY = locationY <= 0 ? 1 : (int) (MainActivity.screenHeight * 0.82 - 1);
+        }
     }
 
     /* Todo: 这里可以使英雄机不掉血     */

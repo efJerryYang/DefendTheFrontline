@@ -18,7 +18,6 @@ import android.view.SurfaceView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-import com.efjerryyang.defendthefrontline.aircraft.AbstractAircraft;
 import com.efjerryyang.defendthefrontline.aircraft.AbstractEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.BossEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
@@ -119,6 +118,10 @@ public abstract class AbstractGame extends SurfaceView implements
     protected SurfaceHolder mSurfaceHolder;
     public int screenHeight;
     public int screenWidth;
+    public static float prevFingerX = 0;
+    public static float prevFingerY = 0;
+    public static float curFingerX = 0;
+    public static float curFingerY = 0;
 
     protected AbstractGame(Context context, int gameLevel, boolean enableAudio) {
         super(context);
@@ -180,43 +183,24 @@ public abstract class AbstractGame extends SurfaceView implements
         // playBGM
 //            playBGM();
         // 子弹移动
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         bulletsMoveAction();
         // 飞机移动
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         aircraftsMoveAction(1);
         // 道具移动
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         propMoveAction();
         // 撞击检测
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         crashCheckAction();
         // 后处理
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         postProcessAction();
         //每个时刻重绘界面
 //            repaint();
         // 游戏结束检查
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         gameOverCheck();
-//        };
-//        Runnable timeCounter = () -> {
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         time += timeInterval;
         // 难度控制
         level = Math.min(bossCnt + 0.9999 + baseLevel, baseLevel * ((double) time / 1e5 + levelScalar));
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         bulletPropStageCount();
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         bloodPropStageCount();
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
-//            if (gameOverFlag) {
-//                executorService.shutdown();
-//            }
-//        };
-//        executorService.scheduleWithFixedDelay(gameTask, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
-//        executorService.scheduleWithFixedDelay(timeCounter, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
-
     }
 
     public void bloodPropStageCount() {
@@ -296,6 +280,7 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public void aircraftsMoveAction(double factor) {
+        heroAircraft.forward();
         for (AbstractEnemy enemyAircraft : enemyAircrafts) {
             boolean outOfBound = enemyAircraft.notValid();
             enemyAircraft.forward();
@@ -577,15 +562,13 @@ public abstract class AbstractGame extends SurfaceView implements
 
     public void paintScoreAndLife() {
         // Todo: canvas 绘图不起作用，可能是图片的遮挡，待解决
-        int x = (int) (MainActivity.screenWidth * 0.05);
-        int y = (int) (MainActivity.screenHeight * 0.8);
-        textPaint.setTextSize(64);
+        int x = (int) (MainActivity.screenWidth * 0.03);
+        int y = (int) (MainActivity.screenHeight * 0.87);
+        textPaint.setTextSize(40);
 //        textPaint.setStrokeWidth(3); // 加粗没效果
         textPaint.setColor(Color.RED);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
         canvas.drawText("SCORE:" + this.score, x, y, textPaint);
-        y = y + 100;
-        canvas.drawText("LIFE:" + this.heroAircraft.getHp(), x, y, textPaint);
     }
 
     public void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects) {
@@ -628,7 +611,7 @@ public abstract class AbstractGame extends SurfaceView implements
         shapePaint.setColor(Color.BLACK);
         canvas.drawLines(pts, shapePaint);
         textPaint.setColor(surface);
-        textPaint.setTextSize(28);
+        textPaint.setTextSize(25);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
         if (text) {
             @SuppressLint("DefaultLocale")
@@ -745,28 +728,24 @@ public abstract class AbstractGame extends SurfaceView implements
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        // Notice: 该部分代码主要参考来自于tkj，实现不接触英雄机的相对位置移动，避免视角的遮挡
+        float x = event.getX(), y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                this.heroAircraft.setLocationX(heroAircraft.getLocationX());
-                this.heroAircraft.setLocationY(heroAircraft.getLocationY());
                 break;
             case MotionEvent.ACTION_MOVE:
-                int deltaX = (int) ((event.getX() - heroAircraft.getLocationX()) * 0.4);
-                int deltaY = (int) ((event.getY() - heroAircraft.getLocationY()) * 0.4);
-                int signX = deltaX > 0 ? 1 : -1;
-                int signY = deltaY > 0 ? 1 : -1;
-                this.heroAircraft.setLocationX(heroAircraft.getLocationX() + (Math.abs(deltaX) > 20 ? signX * 20 : deltaX));
-                this.heroAircraft.setLocationY(heroAircraft.getLocationY() + (Math.abs(deltaY) > 20 ? signY * 20 : deltaY));
-                // Todo: ask tkj
+                float dx = x - curFingerX, dy = y - curFingerY;
+                heroAircraft.setLocationX((int) (heroAircraft.getLocationX() + dx));
+                heroAircraft.setLocationY((int) (heroAircraft.getLocationY() + dy));
                 break;
-//            case MotionEvent.ACTION_UP:
-//                this.heroAircraft.setLocationX(heroAircraft.getLocationX());
-//                this.heroAircraft.setLocationY(heroAircraft.getLocationY());
-//                break;
+            case MotionEvent.ACTION_UP:
+                break;
             default:
                 this.heroAircraft.setLocation(heroAircraft.getLocationX(), heroAircraft.getLocationY());
                 break;
         }
+        curFingerX = x;
+        curFingerY = y;
         return true;
     }
 
