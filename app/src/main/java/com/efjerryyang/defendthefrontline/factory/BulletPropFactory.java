@@ -8,7 +8,7 @@ import com.efjerryyang.defendthefrontline.prop.BulletProp;
  */
 public class BulletPropFactory implements PropFactory {
     private int speedX = 0;
-    private int speedY = 1;
+    private int speedY = 25;
     private int score = 30;
     @Override
     public AbstractProp createProp(int locationX, int locationY) {

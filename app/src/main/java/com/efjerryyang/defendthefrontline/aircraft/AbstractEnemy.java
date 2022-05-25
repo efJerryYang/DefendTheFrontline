@@ -19,7 +19,7 @@ public abstract class AbstractEnemy extends AbstractAircraft implements BombSubs
 
     public AbstractEnemy(int locationX, int locationY, int speedX, int speedY, int hp, int score) {
         super(locationX, locationY, speedX, speedY, hp);
-        this.score = score;
+        this.score = score + hp / 5;
     }
 
     @Override

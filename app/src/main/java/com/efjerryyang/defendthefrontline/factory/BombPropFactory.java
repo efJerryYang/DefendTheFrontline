@@ -9,7 +9,7 @@ import com.efjerryyang.defendthefrontline.prop.BombProp;
  */
 public class BombPropFactory implements PropFactory{
     private int speedX = 0;
-    private int speedY = 1;
+    private int speedY = 25;
     private int score = 30;
 
     @Override

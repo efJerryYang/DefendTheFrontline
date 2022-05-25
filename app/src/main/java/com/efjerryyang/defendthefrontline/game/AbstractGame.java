@@ -639,11 +639,11 @@ public abstract class AbstractGame extends SurfaceView implements
         shapePaint.setColor(Color.BLACK);
         canvas.drawLines(pts, shapePaint);
         textPaint.setColor(surface);
-        textPaint.setTextSize(25);
+        textPaint.setTextSize(24);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
         if (text) {
             @SuppressLint("DefaultLocale")
-            String strDisplay = String.format(" %4d / %4d ", (int) curHp, (int) maxHp);
+            String strDisplay = String.format(" %d / %d ", (int) curHp, (int) maxHp);
             canvas.drawText(strDisplay, pointDX - length * 0.3f, pointDY + height * 1.7f, textPaint);
         }
     }

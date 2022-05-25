@@ -22,7 +22,7 @@ public class MobFactory implements EnemyFactory {
     public AbstractEnemy createEnemy(double level) {
         locationX = (int) (Math.random() * (MainActivity.screenWidth - ImageManager.MOB_ENEMY_IMAGE.getWidth()));
         locationY = (int) (Math.random() * MainActivity.screenHeight * 0.2);
-        int val =(int ) (speedY * Math.sqrt(level));
-        return new MobEnemy(locationX, locationY, speedX, Math.min(val, 15), hp, score);
+        int val = (int) (speedY * Math.sqrt(level));
+        return new MobEnemy(locationX, locationY, speedX, Math.min(val, 15), (int) (hp * Math.sqrt(level)), score);
     }
 }

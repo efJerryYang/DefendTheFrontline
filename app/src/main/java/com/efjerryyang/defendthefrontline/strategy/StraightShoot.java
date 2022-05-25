@@ -18,7 +18,7 @@ public class StraightShoot implements ShootStrategy {
         int x = aircraft.getLocationX();
         int y = aircraft.getLocationY() + aircraft.getDirection() * 2;
         int speedX = 0;
-        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 5;
+        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 20;
         BaseBullet baseBullet;
         int shootNum = aircraft.getShootNum();
         int power = aircraft.getPower();
@@ -41,7 +41,7 @@ public class StraightShoot implements ShootStrategy {
         int x = aircraft.getLocationX();
         int y = aircraft.getLocationY() + aircraft.getDirection() * 2;
         int speedX = 0;
-        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 5;
+        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 20;
         BaseBullet baseBullet;
         int shootNum = aircraft.getShootNum();
         int power = aircraft.getPower();

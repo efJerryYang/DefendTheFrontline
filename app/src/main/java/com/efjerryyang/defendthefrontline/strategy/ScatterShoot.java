@@ -19,8 +19,8 @@ public class ScatterShoot implements ShootStrategy {
         BulletFactory bulletFactory = new BulletFactory();
         int x = aircraft.getLocationX();
         int y = aircraft.getLocationY() + aircraft.getDirection() * 2;
-        int speedX = 1;
-        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 5;
+        int speedX = 3;
+        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 20;
         BaseBullet baseBullet;
         int shootNum = aircraft.getShootNum();
         int power = aircraft.getPower();
@@ -42,8 +42,8 @@ public class ScatterShoot implements ShootStrategy {
         BulletFactory bulletFactory = new BulletFactory();
         int x = aircraft.getLocationX();
         int y = aircraft.getLocationY() + aircraft.getDirection() * 2;
-        int speedX = 1;
-        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 5;
+        int speedX = 3;
+        int speedY = aircraft.getSpeedY() + aircraft.getDirection() * 20;
         BaseBullet baseBullet;
         int shootNum = aircraft.getShootNum();
         int power = aircraft.getPower();
