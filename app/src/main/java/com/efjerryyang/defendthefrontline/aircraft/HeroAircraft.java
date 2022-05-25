@@ -54,6 +54,7 @@ public class HeroAircraft extends AbstractAircraft {
                     MainActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
                     0, 0, HERO_MAX_HP);
         }
+        heroAircraft.initialize();
         return heroAircraft;
     }
 
@@ -62,6 +63,8 @@ public class HeroAircraft extends AbstractAircraft {
     }
 
     public void initialize() {
+        heroAircraft.setLocationX(MainActivity.screenWidth / 2);
+        heroAircraft.setLocationY(MainActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight());
         heroAircraft.setShootNum(1);
         heroAircraft.setMaxHp(HERO_MAX_HP);
         heroAircraft.setHp(HERO_MAX_HP);

@@ -4,6 +4,7 @@ import static com.efjerryyang.defendthefrontline.aircraft.HeroAircraft.BOSS_APPE
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -76,25 +77,27 @@ public abstract class AbstractGame extends SurfaceView implements
     protected ShootContext heroShootContext;
     protected ShootContext enemyShootContext;
     protected boolean enableAudio;
-    protected int baseLevel = 0;
-    protected double level = 0;
-    protected double levelScalar = 1.0;
-    protected int backGroundTop = 0;
-    protected int bulletValidTimeCnt = 0;
-    protected int bloodValidTimeCnt = 0;
-    protected int enemyMaxNumber = 1;
-    protected int enemyMaxNumberUpperBound = 10;
-    protected int score = 0;
-    protected int cycleDuration = 500;
-    protected int cycleTime = 0;
-    protected int mobCnt = 0;
-    protected int mobCntMax = 5;
-    protected int time = 0;
-    protected int timeInterval = 40;
-    protected boolean gameOverFlag = false;
-    protected int[] enemyAircraftGenerationCycle = {0, 400};
-    protected int[] enemyShootCycle = {0, 300};
-    protected int[] heroShootCycle = {0, 300};
+    protected int baseLevel;
+    protected double level;
+    protected double levelScalar;
+    protected int backGroundTop;
+    protected int bulletValidTimeCnt;
+    protected int bloodValidTimeCnt;
+    protected int enemyMaxNumber;
+    protected int enemyMaxNumberUpperBound;
+    protected int score;
+    protected int cycleDuration;
+    protected int cycleTime;
+    protected int mobCnt;
+    protected int mobCntMax;
+    protected int time;
+    protected int timeInterval;
+
+
+    protected boolean gameOverFlag;
+    protected int[] enemyAircraftGenerationCycle;
+    protected int[] enemyShootCycle;
+    protected int[] heroShootCycle;
     /**
      * boss机生成控制
      * 当scoreCnt == 0，并且score > 500时，产生boss敌机，bossFlag = true
@@ -103,14 +106,14 @@ public abstract class AbstractGame extends SurfaceView implements
      * 其中，increment是每次score变化的增量，通用控制语句如下
      * scoreCnt -= bossFlag ? 0 : increment;
      */
-    protected int scoreCnt = 0;
-    protected int bossCnt = 0;
-    protected boolean bossFlag = false;
-    protected boolean bombFlag = false;
-    protected boolean bloodFlag = false;
-    protected boolean bulletFlag = false;
-    protected boolean bulletCrash = false;
-    protected boolean crashFlag = false;
+    protected int scoreCnt;
+    protected int bossCnt;
+    protected boolean bossFlag;
+    protected boolean bombFlag;
+    protected boolean bloodFlag;
+    protected boolean bulletFlag;
+    protected boolean bulletCrash;
+    protected boolean crashFlag;
     protected Canvas canvas;
     protected Paint imagePaint;
     protected Paint shapePaint;
@@ -129,7 +132,9 @@ public abstract class AbstractGame extends SurfaceView implements
         this.baseLevel = gameLevel;
         this.level = gameLevel;
         this.enableAudio = enableAudio;
+        enemyMaxNumber = 1;
         this.enemyMaxNumber = gameLevel + 1;
+        enemyMaxNumberUpperBound = 10;
         this.enemyMaxNumberUpperBound = gameLevel * 2;
         this.screenHeight = MainActivity.screenHeight;
         this.screenWidth = MainActivity.screenWidth;
@@ -162,6 +167,29 @@ public abstract class AbstractGame extends SurfaceView implements
         Log.d("GameActivity", "AbstractGame: before add callback()");
         mSurfaceHolder.addCallback(this);
         this.setFocusable(true);
+        levelScalar = 1.0;
+        backGroundTop = 0;
+        bloodValidTimeCnt = 0;
+        bulletValidTimeCnt = 0;
+        score = 0;
+        cycleDuration = 500;
+        cycleTime = 0;
+        mobCnt = 0;
+        mobCntMax = 5;
+        time = 0;
+        timeInterval = 40;
+        enemyAircraftGenerationCycle = new int[]{0, 400};
+        enemyShootCycle = new int[]{0, 300};
+        heroShootCycle = new int[]{0, 300};
+        gameOverFlag = false;
+        scoreCnt = 0;
+        bossCnt = 0;
+        bossFlag = false;
+        bombFlag = false;
+        bloodFlag = false;
+        bulletFlag = false;
+        bulletCrash = false;
+        crashFlag = false;
     }
 
     public final void action() {
@@ -726,6 +754,10 @@ public abstract class AbstractGame extends SurfaceView implements
         mSurfaceHolder.unlockCanvasAndPost(canvas);
     }
 
+    public boolean getGameOverFlag() {
+        return gameOverFlag;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // Notice: 该部分代码主要参考来自于tkj，实现不接触英雄机的相对位置移动，避免视角的遮挡
@@ -755,7 +787,7 @@ public abstract class AbstractGame extends SurfaceView implements
         while (!gameOverFlag) {
             Log.d("GameActivity", "run: Width:" + this.backgroundImage.getWidth());
             synchronized (mSurfaceHolder) {
-                action(); // Todo: bug 执行3次必然崩溃
+                action();
                 Log.d(TAG, "run: action");
                 draw();
             }
