@@ -13,6 +13,7 @@ public class Config {
     private static int gameLevel = 1;
     private static boolean enableAudio = true;
     private static int score = 0;
+    private static int propValidMaxTime = (int) (2000 / (5 + gameLevel));
 
     public static int getGameLevel() {
         return gameLevel;
@@ -40,5 +41,13 @@ public class Config {
 
     public static void setEnableAudio(boolean enableAudio) {
         Config.enableAudio = enableAudio;
+    }
+
+    public static int getPropValidMaxTime() {
+        return propValidMaxTime;
+    }
+
+    public static void setPropValidMaxTime(double level) {
+        Config.propValidMaxTime = (int) (2000 / (5 + level));
     }
 }

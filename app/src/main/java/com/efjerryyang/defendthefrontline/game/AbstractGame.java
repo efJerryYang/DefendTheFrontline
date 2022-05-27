@@ -131,6 +131,7 @@ public abstract class AbstractGame extends SurfaceView implements
         Log.d("GameActivity", "AbstractGame: after super");
         this.baseLevel = gameLevel;
         this.level = gameLevel;
+        Config.setPropValidMaxTime(level);
         this.enableAudio = enableAudio;
         enemyMaxNumber = 1;
         this.enemyMaxNumber = gameLevel + 1;
@@ -227,6 +228,7 @@ public abstract class AbstractGame extends SurfaceView implements
         time += timeInterval;
         // 难度控制
         level = Math.min(bossCnt + 0.9999 + baseLevel, baseLevel * ((double) time / 1e5 + levelScalar));
+        Config.setPropValidMaxTime(level);
         bulletPropStageCount();
         bloodPropStageCount();
     }
@@ -589,7 +591,6 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public void paintScoreAndLife() {
-        // Todo: canvas 绘图不起作用，可能是图片的遮挡，待解决
         int x = (int) (MainActivity.screenWidth * 0.03);
         int y = (int) (MainActivity.screenHeight * 0.87);
         textPaint.setTextSize(40);
@@ -688,6 +689,7 @@ public abstract class AbstractGame extends SurfaceView implements
             paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
                     heroAircraft.getHp(), heroAircraft.getMaxHp(), true);
         } else {
+            currentPropValidMaxTime = (int) (2000 / (5 + level));
             paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.RED, Color.YELLOW,
                     currentBloodValidTime, currentPropValidMaxTime, true);
         }
@@ -696,6 +698,8 @@ public abstract class AbstractGame extends SurfaceView implements
         y -= bloodBarHeight + barMargin;
         int currentBulletPropStage = heroAircraft.getBulletPropStage();
         int currentBulletValidTime = bulletValidTimeCnt;
+        currentPropValidMaxTime = (int) (2000 / (5 + level));
+        // Todo: should add the constant max to Config value
         @ColorInt int bottom, surface;
         if (currentBulletPropStage == 0 || currentBulletPropStage == 1) {
             bottom = Color.GRAY;
