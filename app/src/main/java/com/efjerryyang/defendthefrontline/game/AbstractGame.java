@@ -1,10 +1,10 @@
 package com.efjerryyang.defendthefrontline.game;
 
 import static com.efjerryyang.defendthefrontline.aircraft.HeroAircraft.BOSS_APPEAR_SCORE;
+import static com.efjerryyang.defendthefrontline.application.MainActivity.gameClient;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,6 +25,7 @@ import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.HeroAircraft;
 import com.efjerryyang.defendthefrontline.aircraft.MobEnemy;
 import com.efjerryyang.defendthefrontline.application.Config;
+import com.efjerryyang.defendthefrontline.application.GameClient;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 import com.efjerryyang.defendthefrontline.application.ShootContext;
@@ -45,6 +46,7 @@ import com.efjerryyang.defendthefrontline.strategy.StraightShoot;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractGame extends SurfaceView implements
         SurfaceHolder.Callback, Runnable {
@@ -125,10 +127,14 @@ public abstract class AbstractGame extends SurfaceView implements
     public static float prevFingerY = 0;
     public static float curFingerX = 0;
     public static float curFingerY = 0;
+    private Thread connectionThread = null;
+
+//    public Socket socket = null;
+//    public OutputStream outputStream = null;
+//    public InputStream inputStream = null;
 
     protected AbstractGame(Context context, int gameLevel, boolean enableAudio) {
         super(context);
-        Log.d("GameActivity", "AbstractGame: after super");
         this.baseLevel = gameLevel;
         this.level = gameLevel;
         Config.setPropValidMaxTime(level);
@@ -139,15 +145,11 @@ public abstract class AbstractGame extends SurfaceView implements
         this.enemyMaxNumberUpperBound = gameLevel * 2;
         this.screenHeight = MainActivity.screenHeight;
         this.screenWidth = MainActivity.screenWidth;
-        Log.d("GameActivity", "AbstractGame: before heroAircraft");
         heroAircraft = HeroAircraft.getHeroAircraft();
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<BaseBullet>();
         enemyBullets = new LinkedList<BaseBullet>();
         props = new LinkedList<>();
-        //Scheduled 线程池，用于定时任务调度
-//        executorService = new ScheduledThreadPoolExecutor(3);
-        Log.d("GameActivity", "AbstractGame: before bloodPropFactory");
         bloodPropFactory = new BloodPropFactory();
         bulletPropFactory = new BulletPropFactory();
         bombPropFactory = new BombPropFactory();
@@ -156,16 +158,11 @@ public abstract class AbstractGame extends SurfaceView implements
         bossFactory = new BossFactory();
         heroShootContext = new ShootContext(new StraightShoot());
         enemyShootContext = new ShootContext(new StraightShoot());
-        Log.d("GameActivity", "AbstractGame: before DAO");
 //        recordDAOImpl = new RecordDAOImpl(gameLevel);
-        Log.d("GameActivity", "AbstractGame: before new Paint()");
-
         imagePaint = new Paint();
         shapePaint = new Paint();
         textPaint = new Paint();
-        Log.d("GameActivity", "AbstractGame: before this.getHolder()");
         mSurfaceHolder = this.getHolder();
-        Log.d("GameActivity", "AbstractGame: before add callback()");
         mSurfaceHolder.addCallback(this);
         this.setFocusable(true);
         levelScalar = 1.0;
@@ -201,11 +198,9 @@ public abstract class AbstractGame extends SurfaceView implements
         if (timeCountAndNewCycleJudge(enemyAircraftGenerationCycle)) {
             generateAllEnemy();
         }
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         if (timeCountAndNewCycleJudge(enemyShootCycle)) {
             enemyShootAction();
         }
-        Log.d(TAG, "shootNum:" + heroAircraft.getShootNum() + "\t TimeCnt:" + bulletValidTimeCnt + "\t Stage" + heroAircraft.getBulletPropStage());
         if (timeCountAndNewCycleJudge(heroShootCycle)) {
             heroShootAction();
         }
@@ -231,6 +226,24 @@ public abstract class AbstractGame extends SurfaceView implements
         Config.setPropValidMaxTime(level);
         bulletPropStageCount();
         bloodPropStageCount();
+//        };
+        Runnable connectTask = () -> {
+            try {
+                String sendMessage = "{score: " + score + "}";
+                // Todo: 添加一个签名，用于确认是同一条信息
+                System.out.println("Send to server: " + sendMessage);
+                gameClient.sendRequest(sendMessage);
+                String res = gameClient.receive();
+                System.out.println("Received from server: " + res);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+//
+//        if (connectionThread == null) {
+        connectionThread = new Thread(connectTask);
+        connectionThread.start();
+//        }
     }
 
     public void bloodPropStageCount() {
@@ -335,7 +348,6 @@ public abstract class AbstractGame extends SurfaceView implements
     public void gameOverCheck() {
         if (heroAircraft.getHp() <= 0) {
             // 游戏结束
-//            System.out.println(executorService.shutdownNow());
             gameOverFlag = true;
             Record record = null;
 //            gameOverThread = new MusicThread("src/audios/game_over.wav");
@@ -345,9 +357,6 @@ public abstract class AbstractGame extends SurfaceView implements
 //            if (bgmThread != null && bgmThread.isAlive()) bgmThread.setInterrupt(true);
 //            if (bgmBossThread != null && bgmBossThread.isAlive()) bgmBossThread.setInterrupt(true);
 //            executorService.shutdownNow();
-//            synchronized (Main.class) {
-//                (Main.class).notify();
-//            }
         }
     }
 

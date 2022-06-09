@@ -15,11 +15,15 @@ import android.widget.Switch;
 
 import com.efjerryyang.defendthefrontline.R;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private static final String TAG = "MainActivity";
     public static int screenWidth;
     public static int screenHeight;
+    public static GameClient gameClient;
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 intent.putExtra("game_index", 2);
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        gameClient = new GameClient("137.184.236.56", 9199);
+                    }
+                };
+                t.start();
                 startActivity(intent);
             }
         });
