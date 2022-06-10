@@ -354,6 +354,7 @@ public abstract class AbstractGame extends SurfaceView implements
 //            gameOverThread.start();
             System.out.println("Game Over!");
             Config.setScore(score);
+            Config.setGameOver(true);
 //            if (bgmThread != null && bgmThread.isAlive()) bgmThread.setInterrupt(true);
 //            if (bgmBossThread != null && bgmBossThread.isAlive()) bgmBossThread.setInterrupt(true);
 //            executorService.shutdownNow();

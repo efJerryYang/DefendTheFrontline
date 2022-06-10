@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/simpleButton"
+        android:layout_above="@id/mode"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
@@ -21,21 +21,23 @@
         android:textColor="@color/black"
         android:textSize="40dp" />
 
-    <Button
-        android:id="@+id/simpleButton"
+    <TextView
+        android:id="@+id/mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/mediumButton"
+        android:layout_above="@id/singleButton"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
 
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Simple" />
+        android:text="Select Mode"
+        android:textColor="@color/black"
+        android:textSize="30dp"/>
 
     <Button
-        android:id="@+id/mediumButton"
+        android:id="@+id/singleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -43,26 +45,16 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Medium" />
+        android:text="Single Mode" />
 
     <Button
-        android:id="@+id/difficultButton"
+        android:id="@+id/onlineButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/mediumButton"
+        android:layout_below="@id/singleButton"
         android:layout_margin="20dp"
-        android:text="Difficult" />
-
-    <Switch
-        android:id="@+id/audioSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/difficultButton"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:text="Audio"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:text="Online Mode" />
 
 
 </RelativeLayout>
