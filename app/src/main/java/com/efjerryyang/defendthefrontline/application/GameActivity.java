@@ -1,6 +1,7 @@
 package com.efjerryyang.defendthefrontline.application;
 
 import static com.efjerryyang.defendthefrontline.application.ImageManager.CLASSNAME_IMAGE_MAP;
+import static com.efjerryyang.defendthefrontline.application.MainActivity.gameClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +26,9 @@ import com.efjerryyang.defendthefrontline.prop.BloodProp;
 import com.efjerryyang.defendthefrontline.prop.BombProp;
 import com.efjerryyang.defendthefrontline.prop.BulletProp;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 
 public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
@@ -39,7 +43,6 @@ public class GameActivity extends AppCompatActivity {
         int gameIndex = intent.getIntExtra("game_index", 0);
         Log.d(TAG, "gameIndex: " + gameIndex);
         Config.setGameLevel(gameIndex);
-
         switch (gameIndex) {
             case 1:
                 game = new SimpleGame(this, Config.getGameLevel(), Config.getEnableAudio());

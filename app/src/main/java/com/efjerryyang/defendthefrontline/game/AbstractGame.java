@@ -25,7 +25,6 @@ import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.HeroAircraft;
 import com.efjerryyang.defendthefrontline.aircraft.MobEnemy;
 import com.efjerryyang.defendthefrontline.application.Config;
-import com.efjerryyang.defendthefrontline.application.GameClient;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 import com.efjerryyang.defendthefrontline.application.ShootContext;
@@ -43,10 +42,12 @@ import com.efjerryyang.defendthefrontline.prop.BombProp;
 import com.efjerryyang.defendthefrontline.prop.BulletProp;
 import com.efjerryyang.defendthefrontline.record.Record;
 import com.efjerryyang.defendthefrontline.strategy.StraightShoot;
+import com.google.gson.Gson;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractGame extends SurfaceView implements
         SurfaceHolder.Callback, Runnable {
@@ -88,6 +89,7 @@ public abstract class AbstractGame extends SurfaceView implements
     protected int enemyMaxNumber;
     protected int enemyMaxNumberUpperBound;
     protected int score;
+    protected int fscore;
     protected int cycleDuration;
     protected int cycleTime;
     protected int mobCnt;
@@ -229,12 +231,25 @@ public abstract class AbstractGame extends SurfaceView implements
 //        };
         Runnable connectTask = () -> {
             try {
-                String sendMessage = "{score: " + score + "}";
-                // Todo: 添加一个签名，用于确认是同一条信息
+                String sendMessage = "@{\"score\": " + score + "}";
                 System.out.println("Send to server: " + sendMessage);
                 gameClient.sendRequest(sendMessage);
-                String res = gameClient.receive();
-                System.out.println("Received from server: " + res);
+                String[] receiveArray = gameClient.receive().split("@");
+                String receive = receiveArray[receiveArray.length - 1];
+                Log.d(TAG, "Received from server: " + receive);
+                Map serverMessage = new Gson().fromJson(receive, Map.class);
+                Log.d(TAG, "serverMessage: " + serverMessage);
+//                int ipHash = serverMessage.get("ip").hashCode();
+//                int fipHash = serverMessage.get("fip").hashCode();
+//                Log.d(TAG,"fhash: " + Integer.toHexString(fipHash).toUpperCase());
+                Set keySet = serverMessage.keySet();
+                Double fscoreDouble = (Double) serverMessage.get("fscore");
+                System.out.println("keySet: " + keySet);
+                System.out.println("fscoreDouble: " + fscoreDouble);
+                fscore = (int) Double.parseDouble(String.valueOf(fscoreDouble));
+                System.out.println("fscore:" + fscore);
+
+                // {"ip": "85.203.23.169", "fip": "183.8.83.237", "score": 6420, "fscore": 9870, "matched": true}
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -607,6 +622,8 @@ public abstract class AbstractGame extends SurfaceView implements
         textPaint.setColor(Color.RED);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
         canvas.drawText("SCORE:" + this.score, x, y, textPaint);
+        textPaint.setColor(Color.BLUE);
+        canvas.drawText("FSCORE:" + this.fscore, MainActivity.screenWidth * 0.60f - x, y, textPaint);
     }
 
     public void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects) {

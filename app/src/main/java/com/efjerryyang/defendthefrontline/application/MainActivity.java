@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Button mediumButton = findViewById(R.id.mediumButton);
         mediumButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public synchronized void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 intent.putExtra("game_index", 2);
                 Thread t = new Thread() {
