@@ -58,7 +58,13 @@ public class GameActivity extends AppCompatActivity {
                 break;
         }
         setContentView(game);
-
+        Intent nextIntent = new Intent(GameActivity.this, FinishActivity.class);
+//        while (true) {
+//            if (Config.getGameOver()) {
+//                startActivity(nextIntent);
+//            }
+//        }
+        //TODO：改正游戏结束条件
     }
 
     public void loadImages() {

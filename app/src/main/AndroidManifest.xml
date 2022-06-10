@@ -15,11 +15,20 @@
         android:theme="@style/Theme.DefendTheFrontline"
         tools:targetApi="31">
         <activity
-            android:name=".application.MainActivity"
+            android:name=".application.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".application.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.efjerryyang.application.Main_Menu" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -29,6 +38,15 @@
                 <action android:name="com.efjerryyang.application.GAME_START"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="com.efjerryyang.application.GAME_REPLAY"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".application.FinishActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.efjerryyang.application.Main_RANK" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>
