@@ -14,6 +14,7 @@ public class Config {
     private static boolean enableAudio = true;
     private static int score = 0;
     private static int propValidMaxTime = (int) (2000 / (5 + gameLevel));
+    private static boolean gameOver = false;
 
     public static int getGameLevel() {
         return gameLevel;
@@ -49,5 +50,13 @@ public class Config {
 
     public static void setPropValidMaxTime(double level) {
         Config.propValidMaxTime = (int) (2000 / (5 + level));
+    }
+
+    public static void setGameOver(boolean gameOver) {
+        Config.gameOver = gameOver;
+    }
+
+    public static boolean getGameOver() {
+        return gameOver;
     }
 }
