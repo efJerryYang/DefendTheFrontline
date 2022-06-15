@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 Thread t = new Thread() {
                     @Override
                     public void run() {
-                        gameClient = new GameClient("137.184.236.56", 9199);
+                        gameClient = new GameClient(Config.host, Config.port);
                     }
                 };
                 t.start();

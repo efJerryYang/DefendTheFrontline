@@ -57,6 +57,11 @@ public class GameActivity extends AppCompatActivity {
                 game = new SimpleGame(this, 1, true);
                 break;
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         setContentView(game);
         Intent nextIntent = new Intent(GameActivity.this, FinishActivity.class);
 //        while (true) {
