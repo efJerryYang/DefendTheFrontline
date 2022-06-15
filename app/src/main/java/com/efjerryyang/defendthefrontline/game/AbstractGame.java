@@ -227,7 +227,7 @@ public abstract class AbstractGame extends SurfaceView implements
         level = Math.min(bossCnt + 0.9999 + baseLevel, baseLevel * ((double) time / 1e5 + levelScalar));
         Config.setPropValidMaxTime(level);
         bulletPropStageCount();
-        bloodPropStageCount();
+//        bloodPropStageCount();
 //        };
         Runnable connectTask = () -> {
             try {
@@ -589,7 +589,8 @@ public abstract class AbstractGame extends SurfaceView implements
 //                    bloodPropThread = new MusicThread("src/audios/get_supply.wav");
 //                    bloodPropThread.start();
                     if (heroAircraft.getHp() == heroAircraft.getMaxHp()) {
-                        bloodValidTimeCnt = (int) (2000 / (5 + level));
+                        bloodValidTimeCnt = 0;
+//                        (int) (2000 / (5 + level));
                     }
                 }
                 int increment = prop.getScore();
@@ -623,8 +624,10 @@ public abstract class AbstractGame extends SurfaceView implements
         textPaint.setColor(Color.RED);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
         canvas.drawText("SCORE:" + this.score, x, y, textPaint);
-        textPaint.setColor(Color.BLUE);
-        canvas.drawText("FSCORE:" + this.fscore, MainActivity.screenWidth * 0.60f - x, y, textPaint);
+        textPaint.setColor(Color.RED);
+        canvas.drawText("LIFE:" + heroAircraft.getHp(), x, y*0.95f, textPaint);
+        textPaint.setColor(Color.CYAN);
+        canvas.drawText("FRIEND SCORE:" + this.fscore, MainActivity.screenWidth * 0.60f - x, y, textPaint);
     }
 
     public void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects) {
@@ -778,9 +781,9 @@ public abstract class AbstractGame extends SurfaceView implements
         // 绘制得分和生命值
         paintScoreAndLife();
         // 绘制道具时间条
-        paintHeroAttributes();
+//        paintHeroAttributes();
         // 绘制敌机生命条
-        paintEnemyLife();
+//        paintEnemyLife();
 
         mSurfaceHolder.unlockCanvasAndPost(canvas);
     }

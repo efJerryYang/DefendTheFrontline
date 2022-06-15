@@ -17,7 +17,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Defend The Frontline"
+        android:text="AircraftWar"
         android:textColor="@color/black"
         android:textSize="40dp" />
 
@@ -32,7 +32,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Simple" />
+        android:text="看看风景" />
 
     <Button
         android:id="@+id/mediumButton"
@@ -43,7 +43,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Medium" />
+        android:text="王牌飞行员" />
 
     <Button
         android:id="@+id/difficultButton"
@@ -52,7 +52,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/mediumButton"
         android:layout_margin="20dp"
-        android:text="Difficult" />
+        android:text="有死无生" />
 
     <Switch
         android:id="@+id/audioSwitch"
@@ -61,7 +61,7 @@
         android:layout_below="@id/difficultButton"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:text="Audio"
+        android:text="音效"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 

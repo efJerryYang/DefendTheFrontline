@@ -36,7 +36,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Defend The Frontline"
+        android:text="AircraftWar"
         android:textColor="@color/black"
         android:textSize="40dp" />
 

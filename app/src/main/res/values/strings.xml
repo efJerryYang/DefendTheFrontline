@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Defend The Frontline</string>
+    <string name="app_name">AircraftWar</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
