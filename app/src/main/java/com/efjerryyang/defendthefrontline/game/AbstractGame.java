@@ -617,16 +617,16 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public void paintScoreAndLife() {
-        int x = (int) (StartActivity.screenWidth * 0.03);
-        int y = (int) (StartActivity.screenHeight * 0.87);
+        int x = (int) (Config.screenWidth * 0.03);
+        int y = (int) (Config.screenHeight * 0.87);
         textPaint.setTextSize(40);
 //        textPaint.setStrokeWidth(3); // 加粗没效果
-        textPaint.setColor(Color.RED);
+        textPaint.setColor(Color.CYAN);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        canvas.drawText("SCORE:" + this.score, x, y, textPaint);
+        canvas.drawText("YSCORE:" + this.score, x, y, textPaint);
         if (Config.online) {
             textPaint.setColor(Color.YELLOW);
-            canvas.drawText("FSCORE:" + this.fscore, StartActivity.screenWidth * 0.60f - x, y, textPaint);
+            canvas.drawText("FSCORE:" + this.fscore, Config.screenWidth * 0.60f - x, y, textPaint);
         }
     }
 
@@ -692,9 +692,9 @@ public abstract class AbstractGame extends SurfaceView implements
                 paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
                         enemy.getHp(), enemy.getMaxHp(), true);
             } else {
-                float x = StartActivity.screenWidth * 0.1f;
-                float y = StartActivity.screenHeight * 0.01f;
-                paintBloodBar(x, y, StartActivity.screenWidth * 0.8f, bloodBarHeight * 2, Color.GRAY, Color.RED,
+                float x = Config.screenWidth * 0.1f;
+                float y = Config.screenHeight * 0.01f;
+                paintBloodBar(x, y, Config.screenWidth * 0.8f, bloodBarHeight * 2, Color.GRAY, Color.RED,
                         enemy.getHp(), enemy.getMaxHp(), true);
             }
         }

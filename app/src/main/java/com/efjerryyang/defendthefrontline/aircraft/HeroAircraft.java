@@ -52,8 +52,8 @@ public class HeroAircraft extends AbstractAircraft {
     public static synchronized HeroAircraft getHeroAircraft() {
         if (heroAircraft == null) {
             heroAircraft = new HeroAircraft(
-                    StartActivity.screenWidth / 2,
-                    StartActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
+                    Config.screenWidth / 2,
+                    Config.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
                     0, 0, HERO_MAX_HP);
         }
         heroAircraft.initialize();
