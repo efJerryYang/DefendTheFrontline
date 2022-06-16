@@ -19,6 +19,7 @@ import android.view.SurfaceView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
+import com.efjerryyang.defendthefrontline.R;
 import com.efjerryyang.defendthefrontline.aircraft.AbstractEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.BossEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
@@ -130,13 +131,15 @@ public abstract class AbstractGame extends SurfaceView implements
     public static float curFingerX = 0;
     public static float curFingerY = 0;
     private Thread connectionThread = null;
-
+    private Context context;
+    private MediaPlayer bgm;
 //    public Socket socket = null;
 //    public OutputStream outputStream = null;
 //    public InputStream inputStream = null;
 
     protected AbstractGame(Context context, int gameLevel, boolean enableAudio) {
         super(context);
+        this.context = context;
         this.baseLevel = gameLevel;
         this.level = gameLevel;
         Config.setPropValidMaxTime(level);
@@ -190,6 +193,8 @@ public abstract class AbstractGame extends SurfaceView implements
         bulletFlag = false;
         bulletCrash = false;
         crashFlag = false;
+        bgm = MediaPlayer.create(context, R.raw.bgm);
+        bgm.start();
     }
 
     public final void action() {
@@ -363,6 +368,7 @@ public abstract class AbstractGame extends SurfaceView implements
     public void gameOverCheck() {
         if (heroAircraft.getHp() <= 0) {
             // 游戏结束
+            bgm.stop();
             gameOverFlag = true;
             Record record = null;
 //            gameOverThread = new MusicThread("src/audios/game_over.wav");
@@ -415,6 +421,8 @@ public abstract class AbstractGame extends SurfaceView implements
             if (enemyMaxNumber < enemyMaxNumberUpperBound) {
                 enemyMaxNumber++;
             }
+            MediaPlayer bossBgm = MediaPlayer.create(this.context, R.raw.bgm_boss);
+            bossBgm.start();
         }
     }
 
@@ -465,6 +473,8 @@ public abstract class AbstractGame extends SurfaceView implements
     public void heroShootAction() {
         // 英雄射击
         heroBullets.addAll(heroShootContext.executeShootStrategy(heroAircraft));
+        MediaPlayer bulletBgm = MediaPlayer.create(this.context, R.raw.bullet);
+        bulletBgm.start();
     }
 
 
@@ -476,6 +486,8 @@ public abstract class AbstractGame extends SurfaceView implements
             if (heroAircraft.crash(bullet)) {
                 heroAircraft.decreaseHp(bullet.getPower());
                 bullet.vanish();
+                MediaPlayer bulletHitBgm = MediaPlayer.create(this.context, R.raw.bullet_hit);
+                bulletHitBgm.start();
             }
         }
     }
@@ -533,6 +545,8 @@ public abstract class AbstractGame extends SurfaceView implements
                     continue;
                 }
                 if (enemyAircraft.crash(bullet)) {
+                    MediaPlayer bulletHitBgm = MediaPlayer.create(this.context, R.raw.bullet_hit);
+                    bulletHitBgm.start();
                     bulletCrash = true;
 //                    bulletHitThread = new MusicThread("src/audios/bullet_hit.wav");
 //                    bulletHitThread.start();
@@ -578,12 +592,16 @@ public abstract class AbstractGame extends SurfaceView implements
                     bombFlag = true;
 //                    bombExplodeThread = new MusicThread("src/audios/bomb_explosion.wav");
 //                    bombExplodeThread.start();
+                    MediaPlayer bombBgm = MediaPlayer.create(this.context, R.raw.bomb_explosion);
+                    bombBgm.start();
                 } else if (prop.getClass().equals(BulletProp.class)) {
                     bulletFlag = true;
 //                    bulletPropThread = new MusicThread("src/audios/bullet.wav");
 //                    bulletPropThread.start();
                     heroAircraft.setBulletPropStage(heroAircraft.getBulletPropStage() + 1);
                     bulletValidTimeCnt = (int) (2000 / (5 + level));
+                    MediaPlayer supplyBgm = MediaPlayer.create(this.context, R.raw.get_supply);
+                    supplyBgm.start();
                 } else if (prop.getClass().equals(BloodProp.class)) {
                     bloodFlag = true;
 //                    bloodPropThread = new MusicThread("src/audios/get_supply.wav");
@@ -591,6 +609,8 @@ public abstract class AbstractGame extends SurfaceView implements
                     if (heroAircraft.getHp() == heroAircraft.getMaxHp()) {
                         bloodValidTimeCnt = (int) (2000 / (5 + level));
                     }
+                    MediaPlayer supplyBgm = MediaPlayer.create(this.context, R.raw.get_supply);
+                    supplyBgm.start();
                 }
                 int increment = prop.getScore();
                 score += increment;
