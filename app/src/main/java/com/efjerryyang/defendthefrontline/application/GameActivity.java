@@ -58,23 +58,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         setContentView(game);
-//        try {
-//            wait();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         Intent nextIntent = new Intent(GameActivity.this, FinishActivity.class);
-//        while (true) {
-//            if (Config.getGameOver()) {
-//                startActivity(nextIntent);
-//                break;
-//            }
-//        }
         //TODO：改正游戏结束条件
     }
 

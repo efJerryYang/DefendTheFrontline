@@ -479,8 +479,6 @@ public abstract class AbstractGame extends SurfaceView implements
     public void heroShootAction() {
         // 英雄射击
         heroBullets.addAll(heroShootContext.executeShootStrategy(heroAircraft));
-        MediaPlayer bulletBgm = MediaPlayer.create(this.context, R.raw.bullet);
-        bulletBgm.start();
     }
 
 
