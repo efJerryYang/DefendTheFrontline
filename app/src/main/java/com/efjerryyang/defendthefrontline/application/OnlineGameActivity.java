@@ -56,12 +56,12 @@ public class OnlineGameActivity extends AppCompatActivity {
                 game = new SimpleGame(this, 1, true);
                 break;
         }
-
         setContentView(game);
         Intent nextIntent = new Intent(OnlineGameActivity.this, FinishActivity.class);
 //        while (true) {
 //            if (Config.getGameOver()) {
 //                startActivity(nextIntent);
+//                break;
 //            }
 //        }
         //TODO：改正游戏结束条件

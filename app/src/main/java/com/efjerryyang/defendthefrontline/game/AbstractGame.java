@@ -5,6 +5,7 @@ import static com.efjerryyang.defendthefrontline.application.OnlineActivity.game
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,8 +26,12 @@ import com.efjerryyang.defendthefrontline.aircraft.EliteEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.HeroAircraft;
 import com.efjerryyang.defendthefrontline.aircraft.MobEnemy;
 import com.efjerryyang.defendthefrontline.application.Config;
+import com.efjerryyang.defendthefrontline.application.FinishActivity;
+import com.efjerryyang.defendthefrontline.application.GameActivity;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
+import com.efjerryyang.defendthefrontline.application.OnlineActivity;
+import com.efjerryyang.defendthefrontline.application.OnlineGameActivity;
 import com.efjerryyang.defendthefrontline.application.ShootContext;
 import com.efjerryyang.defendthefrontline.application.StartActivity;
 import com.efjerryyang.defendthefrontline.basic.AbstractFlyingObject;
@@ -621,12 +626,17 @@ public abstract class AbstractGame extends SurfaceView implements
         int y = (int) (Config.screenHeight * 0.87);
         textPaint.setTextSize(40);
 //        textPaint.setStrokeWidth(3); // 加粗没效果
-        textPaint.setColor(Color.CYAN);
-        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        canvas.drawText("YSCORE:" + this.score, x, y, textPaint);
         if (Config.online) {
+            textPaint.setColor(Color.CYAN);
+            textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+            canvas.drawText("YSCORE:" + this.score, x, y, textPaint);
             textPaint.setColor(Color.YELLOW);
             canvas.drawText("FSCORE:" + this.fscore, Config.screenWidth * 0.60f - x, y, textPaint);
+        } else {
+            textPaint.setColor(Color.CYAN);
+            textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+            canvas.drawText("SCORE:" + this.score, x, y, textPaint);
+
         }
     }
 
@@ -831,6 +841,8 @@ public abstract class AbstractGame extends SurfaceView implements
                 e.printStackTrace();
             }
         }
+//        Intent intent = new Intent(GameActivity.class, FinishActivity.class);
+//        notifyAll();
     }
 
     @Override

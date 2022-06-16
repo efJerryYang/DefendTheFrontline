@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".application.MainActivity">
+    android:layout_height="match_parent">
+<!--    tools:context=".application.MainActivity">-->
 
     <Button
         android:id="@+id/quit"
@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="59dp"
         android:layout_marginBottom="46dp"
-        android:text="Button" />
+        android:text="Quit" />
 
     <Button
         android:id="@+id/replay"
@@ -24,7 +24,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="59dp"
         android:layout_marginBottom="46dp"
-        android:text="Button" />
+        android:text="Replay" />
 
     <TextView
         android:id="@+id/textView"

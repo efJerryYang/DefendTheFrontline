@@ -31,7 +31,12 @@ public class FinishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getScreenSize();
         setContentView(R.layout.activity_finish);
-        data.add("abc");
+//        data.add("abc");
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         ListView listView = findViewById(R.id.rank);
         listView.setAdapter(new MyAdapter(data,this));
         Button replayButton = findViewById(R.id.replay);
@@ -55,11 +60,7 @@ public class FinishActivity extends AppCompatActivity {
 
     // ppt 第二讲
     public void getScreenSize() {
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        screenWidth = dm.widthPixels;
-        Log.i(TAG, "screenWidth: " + screenWidth);
-        screenHeight = dm.heightPixels;
-        Log.i(TAG, "screenHeight: " + screenHeight);
+        screenHeight = Config.screenHeight;
+        screenWidth = Config.screenWidth;
     }
 }
