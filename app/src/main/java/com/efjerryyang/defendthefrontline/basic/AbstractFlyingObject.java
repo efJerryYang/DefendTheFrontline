@@ -3,6 +3,7 @@ package com.efjerryyang.defendthefrontline.basic;
 import android.graphics.Bitmap;
 
 import com.efjerryyang.defendthefrontline.aircraft.AbstractAircraft;
+import com.efjerryyang.defendthefrontline.application.Config;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 
@@ -92,7 +93,7 @@ public abstract class AbstractFlyingObject{
         locationY += speedY;
 
         // 判定 y 轴出界
-        if (speedY > 0 && locationY >= MainActivity.screenHeight) {
+        if (speedY > 0 && locationY >= Config.screenHeight) {
             // 向下飞行出界
             vanish();
         } else if (locationY <= 0) {

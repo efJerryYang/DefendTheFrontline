@@ -1,7 +1,7 @@
 package com.efjerryyang.defendthefrontline.game;
 
 import static com.efjerryyang.defendthefrontline.aircraft.HeroAircraft.BOSS_APPEAR_SCORE;
-import static com.efjerryyang.defendthefrontline.application.MainActivity.gameClient;
+import static com.efjerryyang.defendthefrontline.application.OnlineActivity.gameClient;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,6 +28,7 @@ import com.efjerryyang.defendthefrontline.application.Config;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 import com.efjerryyang.defendthefrontline.application.ShootContext;
+import com.efjerryyang.defendthefrontline.application.StartActivity;
 import com.efjerryyang.defendthefrontline.basic.AbstractFlyingObject;
 import com.efjerryyang.defendthefrontline.bullet.BaseBullet;
 import com.efjerryyang.defendthefrontline.factory.BloodPropFactory;
@@ -145,8 +146,8 @@ public abstract class AbstractGame extends SurfaceView implements
         this.enemyMaxNumber = gameLevel + 1;
         enemyMaxNumberUpperBound = 10;
         this.enemyMaxNumberUpperBound = gameLevel * 2;
-        this.screenHeight = MainActivity.screenHeight;
-        this.screenWidth = MainActivity.screenWidth;
+        this.screenHeight = Config.screenHeight;
+        this.screenWidth = Config.screenWidth;
         heroAircraft = HeroAircraft.getHeroAircraft();
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<BaseBullet>();
@@ -254,11 +255,11 @@ public abstract class AbstractGame extends SurfaceView implements
                 e.printStackTrace();
             }
         };
-//
-//        if (connectionThread == null) {
-        connectionThread = new Thread(connectTask);
-        connectionThread.start();
-//        }
+
+        if (Config.online) {
+            connectionThread = new Thread(connectTask);
+            connectionThread.start();
+        }
     }
 
     public void bloodPropStageCount() {
@@ -616,15 +617,17 @@ public abstract class AbstractGame extends SurfaceView implements
     }
 
     public void paintScoreAndLife() {
-        int x = (int) (MainActivity.screenWidth * 0.03);
-        int y = (int) (MainActivity.screenHeight * 0.87);
+        int x = (int) (StartActivity.screenWidth * 0.03);
+        int y = (int) (StartActivity.screenHeight * 0.87);
         textPaint.setTextSize(40);
 //        textPaint.setStrokeWidth(3); // 加粗没效果
         textPaint.setColor(Color.RED);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
         canvas.drawText("SCORE:" + this.score, x, y, textPaint);
-        textPaint.setColor(Color.BLUE);
-        canvas.drawText("FSCORE:" + this.fscore, MainActivity.screenWidth * 0.60f - x, y, textPaint);
+        if (Config.online) {
+            textPaint.setColor(Color.YELLOW);
+            canvas.drawText("FSCORE:" + this.fscore, StartActivity.screenWidth * 0.60f - x, y, textPaint);
+        }
     }
 
     public void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects) {
@@ -689,9 +692,9 @@ public abstract class AbstractGame extends SurfaceView implements
                 paintBloodBar(x, y, bloodBarLength, bloodBarHeight, Color.GRAY, Color.RED,
                         enemy.getHp(), enemy.getMaxHp(), true);
             } else {
-                float x = MainActivity.screenWidth * 0.1f;
-                float y = MainActivity.screenHeight * 0.01f;
-                paintBloodBar(x, y, MainActivity.screenWidth * 0.8f, bloodBarHeight * 2, Color.GRAY, Color.RED,
+                float x = StartActivity.screenWidth * 0.1f;
+                float y = StartActivity.screenHeight * 0.01f;
+                paintBloodBar(x, y, StartActivity.screenWidth * 0.8f, bloodBarHeight * 2, Color.GRAY, Color.RED,
                         enemy.getHp(), enemy.getMaxHp(), true);
             }
         }

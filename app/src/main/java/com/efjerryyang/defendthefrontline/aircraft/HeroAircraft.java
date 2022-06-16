@@ -1,8 +1,10 @@
 package com.efjerryyang.defendthefrontline.aircraft;
 
+import com.efjerryyang.defendthefrontline.application.Config;
 import com.efjerryyang.defendthefrontline.application.GameActivity;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
+import com.efjerryyang.defendthefrontline.application.StartActivity;
 import com.efjerryyang.defendthefrontline.game.AbstractGame;
 
 import java.util.LinkedList;
@@ -50,8 +52,8 @@ public class HeroAircraft extends AbstractAircraft {
     public static synchronized HeroAircraft getHeroAircraft() {
         if (heroAircraft == null) {
             heroAircraft = new HeroAircraft(
-                    MainActivity.screenWidth / 2,
-                    MainActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
+                    StartActivity.screenWidth / 2,
+                    StartActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
                     0, 0, HERO_MAX_HP);
         }
         heroAircraft.initialize();
@@ -63,8 +65,8 @@ public class HeroAircraft extends AbstractAircraft {
     }
 
     public void initialize() {
-        heroAircraft.setLocationX(MainActivity.screenWidth / 2);
-        heroAircraft.setLocationY(MainActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight());
+        heroAircraft.setLocationX(Config.screenWidth / 2);
+        heroAircraft.setLocationY(Config.screenHeight - ImageManager.HERO_IMAGE.getHeight());
         heroAircraft.setShootNum(1);
         heroAircraft.setMaxHp(HERO_MAX_HP);
         heroAircraft.setHp(HERO_MAX_HP);
@@ -78,11 +80,11 @@ public class HeroAircraft extends AbstractAircraft {
 
     @Override
     public void forward() {
-        if (locationX <= 0 || locationX >= MainActivity.screenWidth) {
-            locationX = locationX <= 0 ? 1 : MainActivity.screenWidth - 1;
+        if (locationX <= 0 || locationX >= Config.screenWidth) {
+            locationX = locationX <= 0 ? 1 : Config.screenWidth - 1;
         }
-        if (locationY <= 0 || locationY >= MainActivity.screenHeight * 0.82) {
-            locationY = locationY <= 0 ? 1 : (int) (MainActivity.screenHeight * 0.82 - 1);
+        if (locationY <= 0 || locationY >= Config.screenHeight * 0.82) {
+            locationY = locationY <= 0 ? 1 : (int) (Config.screenHeight * 0.82 - 1);
         }
     }
 

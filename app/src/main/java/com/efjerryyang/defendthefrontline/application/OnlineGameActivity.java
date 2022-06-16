@@ -29,15 +29,15 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 
-public class GameActivity extends AppCompatActivity {
-    private static final String TAG = "GameActivity";
+public class OnlineGameActivity extends AppCompatActivity {
+    private static final String TAG = "OnlineGameActivity";
     private AbstractGame game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadImages();
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_online_game);
         Intent intent = getIntent();
         int gameIndex = intent.getIntExtra("game_index", 0);
         Log.d(TAG, "gameIndex: " + gameIndex);
@@ -58,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         setContentView(game);
-        Intent nextIntent = new Intent(GameActivity.this, FinishActivity.class);
+        Intent nextIntent = new Intent(OnlineGameActivity.this, FinishActivity.class);
 //        while (true) {
 //            if (Config.getGameOver()) {
 //                startActivity(nextIntent);

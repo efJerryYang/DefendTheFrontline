@@ -10,8 +10,11 @@ public class Config {
     public final static double BOMB_PROP_GENERATION_DIFFICULT = 0.2;
     public final static double BLOOD_PROP_GENERATION_DIFFICULT = 0.2;
     public final static double BULLET_PROP_GENERATION_DIFFICULT = 0.3;
-    public static final String host = "137.184.186.60";
-    public static final int port = 4467;
+    public final static String host = "137.184.186.60";
+    public final static int port = 4467;
+    public static int screenWidth;
+    public static int screenHeight;
+
     public static boolean online = false;
     private static int gameLevel = 1;
     private static boolean enableAudio = true;

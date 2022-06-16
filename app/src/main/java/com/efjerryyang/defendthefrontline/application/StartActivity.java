@@ -21,7 +21,6 @@ public class StartActivity extends AppCompatActivity {
     public static int screenWidth;
     public static int screenHeight;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +32,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(StartActivity.this, MainActivity.class);
                 intent.putExtra("mode", 1);
+                Config.online = false;
                 startActivity(intent);
             }
         });
@@ -40,15 +40,15 @@ public class StartActivity extends AppCompatActivity {
         onlineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                Intent intent = new Intent(StartActivity.this, OnlineActivity.class);
                 intent.putExtra("mode", 2);
+                Config.online = true;
                 startActivity(intent);
             }
         });
 
     }
 
-    // ppt 第二讲
     public void getScreenSize() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -56,5 +56,7 @@ public class StartActivity extends AppCompatActivity {
         Log.i(TAG, "screenWidth: " + screenWidth);
         screenHeight = dm.heightPixels;
         Log.i(TAG, "screenHeight: " + screenHeight);
+        Config.screenWidth = screenWidth;
+        Config.screenHeight = screenHeight;
     }
 }

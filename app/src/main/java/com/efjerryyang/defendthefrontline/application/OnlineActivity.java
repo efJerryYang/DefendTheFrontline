@@ -17,42 +17,65 @@ import com.efjerryyang.defendthefrontline.R;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class OnlineActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "OnlineActivity";
     public static int screenWidth;
     public static int screenHeight;
+    public static GameClient gameClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getScreenSize();
-        setContentView(R.layout.activity_main);
-        Button simpleButton = findViewById(R.id.simpleButton);
+        setContentView(R.layout.activity_online);
+        Button simpleButton = findViewById(R.id.simpleButtonOnline);
+
         simpleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                Intent intent = new Intent(OnlineActivity.this, OnlineGameActivity.class);
                 intent.putExtra("game_index", 1);
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        gameClient = new GameClient(Config.host, Config.port);
+                    }
+                };
+                t.start();
                 startActivity(intent);
             }
         });
-        Button mediumButton = findViewById(R.id.mediumButton);
+        Button mediumButton = findViewById(R.id.mediumButtonOnline);
         mediumButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public synchronized void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(OnlineActivity.this, OnlineGameActivity.class);
                 intent.putExtra("game_index", 2);
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        gameClient = new GameClient(Config.host, Config.port);
+                    }
+                };
+                t.start();
                 startActivity(intent);
             }
         });
 
-        Button difficultButton = findViewById(R.id.difficultButton);
+        Button difficultButton = findViewById(R.id.difficultButtonOnline);
         difficultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                Intent intent = new Intent(OnlineActivity.this, OnlineGameActivity.class);
                 intent.putExtra("game_index", 4);
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        gameClient = new GameClient(Config.host, Config.port);
+                    }
+                };
+                t.start();
                 startActivity(intent);
             }
         });
@@ -71,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // ppt 第二讲
     public void getScreenSize() {
         screenWidth = Config.screenWidth;
         screenHeight = Config.screenHeight;

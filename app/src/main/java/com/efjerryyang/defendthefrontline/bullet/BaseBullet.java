@@ -1,6 +1,7 @@
 package com.efjerryyang.defendthefrontline.bullet;
 
 
+import com.efjerryyang.defendthefrontline.application.Config;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 import com.efjerryyang.defendthefrontline.basic.AbstractFlyingObject;
 import com.efjerryyang.defendthefrontline.subscriber.BombSubscriber;
@@ -25,7 +26,7 @@ public class BaseBullet extends AbstractFlyingObject implements BombSubscriber {
         super.forward();
 
         // 判定 x 轴出界
-        if (locationX <= 0 || locationX >= MainActivity.screenWidth) {
+        if (locationX <= 0 || locationX >= Config.screenWidth) {
             vanish();
         }
 

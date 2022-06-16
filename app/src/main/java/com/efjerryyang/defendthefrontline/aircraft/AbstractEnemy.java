@@ -1,5 +1,6 @@
 package com.efjerryyang.defendthefrontline.aircraft;
 
+import com.efjerryyang.defendthefrontline.application.Config;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 import com.efjerryyang.defendthefrontline.subscriber.BombSubscriber;
 
@@ -25,13 +26,13 @@ public abstract class AbstractEnemy extends AbstractAircraft implements BombSubs
     @Override
     public void forward() {
         super.forward();
-        if (locationX <= 0 || locationX >= MainActivity.screenWidth) {
+        if (locationX <= 0 || locationX >= Config.screenWidth) {
             // 横向超出边界后反向
-            locationX = locationX <= 0 ? 1 : MainActivity.screenWidth - 1;
+            locationX = locationX <= 0 ? 1 : Config.screenWidth - 1;
             speedX = -speedX;
         }
         // 判定 y 轴向下飞行出界
-        if (locationY >= MainActivity.screenHeight) {
+        if (locationY >= Config.screenHeight) {
             vanish();
         }
     }

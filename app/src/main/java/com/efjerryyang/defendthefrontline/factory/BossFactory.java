@@ -2,6 +2,7 @@ package com.efjerryyang.defendthefrontline.factory;
 
 import com.efjerryyang.defendthefrontline.aircraft.AbstractEnemy;
 import com.efjerryyang.defendthefrontline.aircraft.BossEnemy;
+import com.efjerryyang.defendthefrontline.application.Config;
 import com.efjerryyang.defendthefrontline.application.ImageManager;
 import com.efjerryyang.defendthefrontline.application.MainActivity;
 
@@ -19,8 +20,8 @@ public class BossFactory implements EnemyFactory {
 
     @Override
     public AbstractEnemy createEnemy(double level) {
-        locationX = (int) (Math.random() * (MainActivity.screenWidth - ImageManager.BOSS_ENEMY_IMAGE.getWidth()));
-        locationY = (int) (Math.random() * MainActivity.screenHeight * 0.1);
+        locationX = (int) (Math.random() * (Config.screenWidth - ImageManager.BOSS_ENEMY_IMAGE.getWidth()));
+        locationY = (int) (Math.random() * Config.screenHeight * 0.1);
         boolean moveRight = Math.random() < 0.5;
         speedX = moveRight ? 10 : -10;
         return new BossEnemy(locationX, locationY, speedX, speedY, (int)(hp * level), score);
