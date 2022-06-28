@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MyAdapter extends BaseAdapter {
+public class GameAdapter extends BaseAdapter {
 
     private List<String> data;//创建私有的Bean类的data
     private Context context;
 
-    public MyAdapter(List<String> data, Context context) {
+    public GameAdapter(List<String> data, Context context) {
         this.data = data;
         this.context = context;
     }

@@ -10,7 +10,7 @@ public class Config {
     public final static double BOMB_PROP_GENERATION_DIFFICULT = 0.2;
     public final static double BLOOD_PROP_GENERATION_DIFFICULT = 0.2;
     public final static double BULLET_PROP_GENERATION_DIFFICULT = 0.3;
-    public final static String host = "137.184.186.60";
+    public final static String host = "146.190.48.125";
     public final static int port = 4467;
     public static int screenWidth;
     public static int screenHeight;

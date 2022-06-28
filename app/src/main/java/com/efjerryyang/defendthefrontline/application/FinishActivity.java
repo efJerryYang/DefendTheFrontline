@@ -1,15 +1,10 @@
 package com.efjerryyang.defendthefrontline.application;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -38,7 +33,7 @@ public class FinishActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
         ListView listView = findViewById(R.id.rank);
-        listView.setAdapter(new MyAdapter(data,this));
+        listView.setAdapter(new GameAdapter(data,this));
         Button replayButton = findViewById(R.id.replay);
         replayButton.setOnClickListener(new View.OnClickListener() {
             @Override
